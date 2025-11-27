@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "6432:5432"
+
+  app:
+    build:
+      dockerfile: docker/Dockerfile
+      platforms:
+        - linux/amd64
+    ports:
+      - "8000:8000"
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_DATABASE: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+    depends_on:
+      db:
+        condition: service_started
