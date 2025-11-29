@@ -11,11 +11,12 @@ class Settings:
         self.host = environ.get("DB_HOST")
         self.port = environ.get("DB_PORT")
 
-    def get_connection_string(self) -> str:
+    @property
+    def connection_string(self) -> str:
         return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
 
 
 settings = Settings()
 
-engine = create_async_engine(url=settings.get_connection_string())
+engine = create_async_engine(url=settings.connection_string)
 new_session = async_sessionmaker(bind=engine, expire_on_commit=True)
