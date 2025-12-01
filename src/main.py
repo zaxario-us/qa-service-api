@@ -1,9 +1,9 @@
 import uvicorn
 
-from os import environ
 from fastapi import FastAPI
 
 from api import main_router
+from core.settings import AppSettings
 
 
 app = FastAPI(debug=True)
@@ -11,7 +11,6 @@ app.include_router(main_router)
 
 
 if __name__ == "__main__":
-    host = environ.get("APP_HOST")
-    port = int(environ.get("APP_PORT"))
+    app_settings = AppSettings()
 
-    uvicorn.run(app, host=host, port=port)
+    uvicorn.run(app, host=app_settings.host, port=app_settings.port)
